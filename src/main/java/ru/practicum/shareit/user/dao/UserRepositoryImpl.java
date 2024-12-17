@@ -1,7 +1,6 @@
 package ru.practicum.shareit.user.dao;
 
 import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.exception.ConditionsNotMetException;
 import ru.practicum.shareit.exception.DuplicateException;
 import ru.practicum.shareit.user.model.User;
 

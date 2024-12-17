@@ -70,7 +70,7 @@ public class ItemServiceImpl implements ItemService {
         if (itemId <= 0) {
             throw new ConditionsNotMetException("ID вещи должен быть больше 0");
         }
-        final Item item =itemRepository.getById(itemId)
+        final Item item = itemRepository.getById(itemId)
                 .orElseThrow(() -> new NotFoundException("Вещь с ID = " + itemId + " не найдена"));
 
         if (!item.getOwnerId().equals(userId)) {

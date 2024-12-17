@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.controller;
 
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
