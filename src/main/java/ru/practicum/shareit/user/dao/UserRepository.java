@@ -7,8 +7,12 @@ import java.util.Optional;
 
 public interface UserRepository {
     User create(User user);
+
     Collection<User> getAll();
+
     Optional<User> getById(Long id);
+
     User update(Long userId, User user);
+
     void delete(Long id);
 }
