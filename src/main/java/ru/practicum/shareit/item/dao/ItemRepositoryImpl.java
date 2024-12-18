@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item.dao;
 
 import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.exception.ConditionsNotMetException;
+import ru.practicum.shareit.exception.DuplicateException;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class ItemRepositoryImpl implements ItemRepository {
                 .stream()
                 .anyMatch(existingUser -> existingUser.equals(item));
         if (isDuplicate) {
-            throw new ConditionsNotMetException("Эта вещь уже добавлена");
+            throw new DuplicateException("Эта вещь уже добавлена");
         }
     }
 }

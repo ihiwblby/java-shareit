@@ -28,7 +28,7 @@ public class ItemDto {
 
     Long ownerId;
 
-    @NotNull(message = "Владелец не может быть пустым", groups = OnCreate.class)
+    @NotNull(message = "Должен быть указан статус бронирования", groups = OnCreate.class)
     Boolean available;
 
     ItemRequest request;
