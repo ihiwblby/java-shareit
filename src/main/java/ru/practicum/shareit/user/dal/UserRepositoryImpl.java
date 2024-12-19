@@ -1,18 +1,22 @@
-package ru.practicum.shareit.user.dao;
+package ru.practicum.shareit.user.dal;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.DuplicateException;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Repository
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserRepositoryImpl implements UserRepository {
 
-    private final Map<Long, User> users = new HashMap<>();
+    Map<Long, User> users = new HashMap<>();
 
     @Override
     public User create(User user) {
@@ -24,8 +28,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Collection<User> getAll() {
-        return users.values();
+    public List<User> getAll() {
+        return new ArrayList<>(users.values());
     }
 
     @Override

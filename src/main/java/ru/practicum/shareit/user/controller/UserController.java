@@ -1,5 +1,6 @@
 package ru.practicum.shareit.user.controller;
 
+import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,11 +22,12 @@ import ru.practicum.shareit.validation.OnUpdate;
 
 @RestController
 @RequestMapping(path = "/users")
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
+@Validated
 public class UserController {
 
-    final UserService userService;
+    UserService userService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,18 +36,18 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDto getById(@PathVariable Long id) {
+    public UserDto getById(@Positive @PathVariable Long id) {
         return userService.getById(id);
     }
 
     @PatchMapping("/{userId}")
-    public UserDto update(@PathVariable Long userId,
+    public UserDto update(@Positive @PathVariable Long userId,
                           @Validated(OnUpdate.class) @RequestBody UserDto userDto) {
         return userService.update(userId, userDto);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@Positive @PathVariable Long id) {
         userService.delete(id);
     }
 }

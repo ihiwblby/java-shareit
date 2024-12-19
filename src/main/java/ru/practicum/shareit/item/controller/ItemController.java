@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.controller;
 
+import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,39 +26,40 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/items")
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
+@Validated
 public class ItemController {
 
-    final ItemService itemService;
+    ItemService itemService;
     static final String HEADER = "X-Sharer-User-Id";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto create(@Validated(OnCreate.class) @RequestBody ItemDto itemDto,
-                       @RequestHeader (HEADER) Long userId) {
+                          @Positive @RequestHeader (HEADER) Long userId) {
         return itemService.create(itemDto, userId);
     }
 
     @GetMapping("/{id}")
-    public ItemDto getById(@PathVariable Long id) {
+    public ItemDto getById(@Positive @PathVariable Long id) {
         return itemService.getById(id);
     }
 
     @GetMapping
-    public Collection<ItemDto> getAllByOwner(@RequestHeader(HEADER) Long userId) {
+    public Collection<ItemDto> getAllByOwner(@Positive @RequestHeader(HEADER) Long userId) {
         return itemService.getAllByOwner(userId);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto update(@PathVariable Long itemId,
+    public ItemDto update(@Positive @PathVariable Long itemId,
                           @Validated(OnUpdate.class) @RequestBody ItemDto itemDto,
-                          @RequestHeader(HEADER) Long userId) {
+                          @Positive @RequestHeader(HEADER) Long userId) {
         return itemService.update(itemId, itemDto, userId);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@Positive @PathVariable Long id) {
         itemService.delete(id);
     }
 

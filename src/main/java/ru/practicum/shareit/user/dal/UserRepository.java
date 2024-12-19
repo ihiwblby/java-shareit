@@ -1,14 +1,14 @@
-package ru.practicum.shareit.user.dao;
+package ru.practicum.shareit.user.dal;
 
 import ru.practicum.shareit.user.model.User;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
     User create(User user);
 
-    Collection<User> getAll();
+    List<User> getAll();
 
     Optional<User> getById(Long id);
 

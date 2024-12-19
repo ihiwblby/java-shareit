@@ -1,19 +1,21 @@
 package ru.practicum.shareit.user.service;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exception.ConditionsNotMetException;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.user.dao.UserRepository;
+import ru.practicum.shareit.user.dal.UserRepository;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 
 @RequiredArgsConstructor
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
 
-    final UserRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     public UserDto create(UserDto userDto) {
@@ -23,22 +25,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getById(Long id) {
-        if (id <= 0) {
-            throw new ConditionsNotMetException("ID пользователя должен быть больше 0");
-        }
-
-        final User user = userRepository.getById(id)
+        return userRepository.getById(id)
+                .map(UserMapper::toUserDto)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
-
-        return UserMapper.toUserDto(user);
     }
 
     @Override
     public UserDto update(Long userId, UserDto userDto) {
-        if (userId <= 0) {
-            throw new ConditionsNotMetException("ID пользователя должен быть больше 0");
-        }
-
         userRepository.getById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
 
@@ -48,9 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        if (id <= 0) {
-            throw new ConditionsNotMetException("ID пользователя должен быть больше 0");
-        }
+        userRepository.getById(id)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+
         userRepository.delete(id);
     }
 }

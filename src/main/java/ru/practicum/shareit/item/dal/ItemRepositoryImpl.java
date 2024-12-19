@@ -1,5 +1,8 @@
-package ru.practicum.shareit.item.dao;
+package ru.practicum.shareit.item.dal;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.DuplicateException;
 import ru.practicum.shareit.item.model.Item;
@@ -11,9 +14,10 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ItemRepositoryImpl implements ItemRepository {
 
-    private final Map<Long, Item> items = new HashMap<>();
+    Map<Long, Item> items = new HashMap<>();
 
     @Override
     public Item create(Item item) {
@@ -41,15 +45,17 @@ public class ItemRepositoryImpl implements ItemRepository {
     public Item update(Long itemId, Item item) {
         isDuplicate(item);
         final Item existingItem = items.get(itemId);
-        if (!existingItem.getName().equals(item.getName()) && item.getName() != null) {
+
+        if (!existingItem.getName().equals(item.getName()) && !StringUtils.isBlank(item.getName())) {
             existingItem.setName(item.getName());
         }
-        if (!existingItem.getDescription().equals(item.getDescription()) && item.getDescription() != null) {
+        if (!existingItem.getDescription().equals(item.getDescription()) && !StringUtils.isBlank(item.getDescription())) {
             existingItem.setDescription(item.getDescription());
         }
         if (!existingItem.getAvailable().equals(item.getAvailable()) && item.getAvailable() != null) {
             existingItem.setAvailable(item.getAvailable());
         }
+
         items.put(itemId, existingItem);
         return items.get(itemId);
     }
@@ -61,7 +67,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     @Override
     public List<Item> search(String text) {
-        if (text == null || text.trim().isEmpty()) {
+        if (StringUtils.isBlank(text)) {
             return new ArrayList<>();
         }
 
