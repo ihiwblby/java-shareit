@@ -1,9 +1,7 @@
-package ru.practicum.shareit.booking.model;
+package ru.practicum.shareit.item.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,46 +13,39 @@ import jakarta.validation.constraints.PastOrPresent;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.booking.validator.StartBeforeEnd;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Builder
 @Entity
 @Getter
 @Setter
-@Table(name = "bookings", schema = "public")
+@Table(name = "comments", schema = "public")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@EqualsAndHashCode(of = {"id", "start", "end"})
-@NoArgsConstructor
 @AllArgsConstructor
-@StartBeforeEnd
-public class Booking {
+@NoArgsConstructor
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "start_date")
-    LocalDateTime start;
-
-    @Column(name = "end_date")
-    LocalDateTime end;
+    @Column(nullable = false)
+    String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
     Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booker_id", nullable = false)
-    User booker;
+    @JoinColumn(name = "author_id", nullable = false)
+    User author;
 
-    @Enumerated(EnumType.STRING)
-    BookingStatus status;
+    @Column(nullable = false)
+    @PastOrPresent
+    LocalDate created;
 }
