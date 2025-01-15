@@ -38,4 +38,14 @@ public class BookingResponseDto implements TimeRange {
 
     @NotNull(message = "Статус бронирования не может быть null")
     BookingStatus status;
+
+    @Override
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    @Override
+    public LocalDateTime getEnd() {
+        return end;
+    }
 }

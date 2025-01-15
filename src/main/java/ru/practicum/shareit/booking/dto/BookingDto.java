@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.booking.model.BookingStatus;
+import ru.practicum.shareit.booking.validator.BookingDates;
 import ru.practicum.shareit.booking.validator.TimeRange;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"id", "start", "end"})
+@BookingDates
 public class BookingDto implements TimeRange {
     Long id;
 
@@ -34,4 +36,14 @@ public class BookingDto implements TimeRange {
 
     @NotNull(message = "Статус не может быть null")
     BookingStatus status;
+
+    @Override
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    @Override
+    public LocalDateTime getEnd() {
+        return end;
+    }
 }

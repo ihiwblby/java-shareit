@@ -25,4 +25,14 @@ public class BookingCreationDto implements TimeRange {
 
     @NotNull(message = "Предмет отзыва не может быть null")
     Long itemId;
+
+    @Override
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    @Override
+    public LocalDateTime getEnd() {
+        return end;
+    }
 }
