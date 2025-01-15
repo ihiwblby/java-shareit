@@ -50,13 +50,13 @@ public class BookingController {
 
     @GetMapping
     public Collection<BookingResponseDto> getByBooker(@RequestHeader(HEADER) Long bookerId,
-                                              @RequestParam(defaultValue = "ALL") BookingStatus status) {
-        return bookingService.getByBooker(bookerId, status);
+                                              @RequestParam(defaultValue = "ALL") BookingStatus state) {
+        return bookingService.getByBooker(bookerId, state);
     }
 
     @GetMapping("/owner")
     public Collection<BookingResponseDto> getByOwner(@RequestHeader(HEADER) Long ownerId,
-                                             @RequestParam(defaultValue = "ALL") BookingStatus status) {
-        return bookingService.getByOwner(ownerId, status);
+                                             @RequestParam(defaultValue = "ALL") BookingStatus state) {
+        return bookingService.getByOwner(ownerId, state);
     }
 }

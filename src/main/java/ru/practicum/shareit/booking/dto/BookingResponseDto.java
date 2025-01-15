@@ -8,7 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.booking.model.BookingStatus;
-import ru.practicum.shareit.booking.validator.StartBeforeEnd;
+import ru.practicum.shareit.booking.validator.BookingDates;
+import ru.practicum.shareit.booking.validator.TimeRange;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.dto.UserDto;
 
@@ -19,8 +20,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@StartBeforeEnd
-public class BookingResponseDto {
+@BookingDates
+public class BookingResponseDto implements TimeRange {
     Long id;
 
     @NotNull(message = "Дата начала бронирования не может быть null")

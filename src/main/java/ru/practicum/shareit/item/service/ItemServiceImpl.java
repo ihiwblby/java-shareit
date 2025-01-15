@@ -16,6 +16,7 @@ import ru.practicum.shareit.item.dal.CommentRepository;
 import ru.practicum.shareit.item.dal.ItemRepository;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemListResponseDto;
 import ru.practicum.shareit.item.mapper.CommentMapper;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Comment;
@@ -62,32 +63,20 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toList());
 
         ItemDto itemDto = ItemMapper.toItemDto(item);
-        setBookings(itemDto);
+        setBookingsForOneItem(itemDto);
         itemDto.setComments(comments);
         return itemDto;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Collection<ItemDto> getAllByOwner(Long userId) {
+    public List<ItemListResponseDto> getAllByOwner(Long userId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь c ID = " + userId + " не найден"));
 
-        List<Item> items = itemRepository.findByOwnerId(userId);
-
-        return items.stream()
-                .map(item -> {
-                    ItemDto itemDto = ItemMapper.toItemDto(item);
-                    setBookings(itemDto);
-
-                    List<CommentDto> comments = commentRepository.findByItem(item).stream()
-                            .map(CommentMapper::toCommentDto)
-                            .collect(Collectors.toList());
-                    itemDto.setComments(comments);
-
-                    return itemDto;
-                })
-                .collect(Collectors.toList());
+        return itemRepository.findByOwnerId(userId).stream()
+                .map(ItemMapper::toItemListResponseDto)
+                .toList();
     }
 
     @Override
@@ -156,12 +145,13 @@ public class ItemServiceImpl implements ItemService {
         Comment comment = CommentMapper.toComment(commentDto);
         comment.setItem(item);
         comment.setAuthor(author);
+        comment.setCreated(LocalDateTime.now());
 
         Comment savedComment = commentRepository.save(comment);
         return CommentMapper.toCommentDto(savedComment);
     }
 
-    private void setBookings(ItemDto itemDto) {
+    private void setBookingsForOneItem(ItemDto itemDto) {
         LocalDateTime now = LocalDateTime.now();
         Item item = ItemMapper.toItem(itemDto);
 

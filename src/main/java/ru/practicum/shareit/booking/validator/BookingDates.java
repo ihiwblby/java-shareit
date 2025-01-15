@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = StartBeforeEndValidator.class)
-public @interface StartBeforeEnd {
+@Constraint(validatedBy = BookingDatesValidator.class)
+public @interface BookingDates {
     String message() default "Некорректная дата бронирования";
 
     Class<?>[] groups() default {};

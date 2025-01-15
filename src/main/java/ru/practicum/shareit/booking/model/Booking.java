@@ -19,7 +19,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.booking.validator.StartBeforeEnd;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
@@ -34,7 +33,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of = {"id", "start", "end"})
 @NoArgsConstructor
 @AllArgsConstructor
-@StartBeforeEnd
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

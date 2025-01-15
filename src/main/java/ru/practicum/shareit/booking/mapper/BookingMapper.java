@@ -43,16 +43,4 @@ public class BookingMapper {
                 .status(BookingStatus.WAITING)
                 .build();
     }
-
-    // Конвертация из BookingDto в Booking (для обновления данных)
-    public static Booking toBooking(BookingDto bookingDto, Item item, User booker) {
-        return Booking.builder()
-                .id(bookingDto.getId())
-                .start(bookingDto.getStart())
-                .end(bookingDto.getEnd())
-                .item(item)
-                .booker(booker)
-                .status(bookingDto.getStatus())
-                .build();
-    }
 }
