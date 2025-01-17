@@ -5,21 +5,23 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.validator.BookingDates;
 import ru.practicum.shareit.booking.validator.TimeRange;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"id", "start", "end"})
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @BookingDates
-public class BookingDto implements TimeRange {
+public class BookingResponseDto implements TimeRange {
     Long id;
 
     @NotNull(message = "Дата начала бронирования не может быть null")
@@ -29,12 +31,12 @@ public class BookingDto implements TimeRange {
     LocalDateTime end;
 
     @NotNull(message = "Предмет отзыва не может быть null")
-    Long itemId;
+    ItemDto item;
 
     @NotNull(message = "Пользователь, взявший в аренду, не может быть null")
-    Long bookerId;
+    UserDto booker;
 
-    @NotNull(message = "Статус не может быть null")
+    @NotNull(message = "Статус бронирования не может быть null")
     BookingStatus status;
 
     @Override

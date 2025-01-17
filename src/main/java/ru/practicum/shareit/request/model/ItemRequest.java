@@ -1,35 +1,38 @@
 package ru.practicum.shareit.request.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDate;
 
+@Entity
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = {"id", "description"})
 public class ItemRequest {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @NotBlank(message = "Текст запроса не может быть пустым")
-    @Size(max = 200, message = "Текст запроса не может быть длиннее 200 символов")
+    @Column
     String description;
 
-    @NotNull(message = "Пользователь, создавший запрос, не может быть пустым")
+    @ManyToOne
+    @JoinColumn(name = "requester_id")
     User requester;
 
-    @NotNull(message = "Дата создания запроса не может быть пустой")
-    @PastOrPresent(message = "Дата создания запроса не может быть в будущем")
+    @Column(name = "created")
+    @CreationTimestamp
     final LocalDate created;
-
-    public ItemRequest() {
-        this.created = LocalDate.now();
-    }
 }

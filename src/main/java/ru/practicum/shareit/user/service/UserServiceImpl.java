@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dal.UserRepository;
 import ru.practicum.shareit.user.dto.UserDto;
@@ -18,32 +19,44 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
+    @Transactional
     public UserDto create(UserDto userDto) {
-        final User user = userRepository.create(UserMapper.toUser(userDto));
+        User user = UserMapper.toUser(userDto);
+        user = userRepository.save(user);
         return UserMapper.toUserDto(user);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto getById(Long id) {
-        return userRepository.getById(id)
-                .map(UserMapper::toUserDto)
-                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+        return UserMapper.toUserDto(user);
     }
 
     @Override
+    @Transactional
     public UserDto update(Long userId, UserDto userDto) {
-        userRepository.getById(userId)
-                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+        User oldUser = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
 
-        final User updatedUser = userRepository.update(userId, UserMapper.toUser(userDto));
-        return UserMapper.toUserDto(updatedUser);
+        if (userDto.getEmail() != null && !userDto.getEmail().equals(oldUser.getEmail())) {
+            oldUser.setEmail(userDto.getEmail());
+        }
+        if (userDto.getName() != null && !userDto.getName().equals(oldUser.getName())) {
+            oldUser.setName(userDto.getName());
+        }
+
+        oldUser = userRepository.save(oldUser);
+        return UserMapper.toUserDto(oldUser);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        userRepository.getById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
-
-        userRepository.delete(id);
+        if (!userRepository.existsById(id)) {
+            throw new NotFoundException("Пользователь не найден");
+        }
+        userRepository.deleteById(id);
     }
 }

@@ -43,4 +43,10 @@ public class ErrorHandler {
     public ErrorResponse handleDuplicateEmail(final DuplicateException e) {
         return new ErrorResponse("Конфликт данных", e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleAccessDenied(final AccessDeniedException e) {
+        return new ErrorResponse("Доступ запрещен", e.getMessage());
+    }
 }
