@@ -34,7 +34,7 @@ public class ItemDto {
     @NotNull(message = "Должен быть указан статус бронирования", groups = OnCreate.class)
     Boolean available;
 
-    ItemRequest request;
+    Long requestId;
 
     BookingDto lastBooking;
 
