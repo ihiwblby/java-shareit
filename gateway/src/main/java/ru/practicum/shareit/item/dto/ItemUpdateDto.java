@@ -1,7 +1,5 @@
 package ru.practicum.shareit.item.dto;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +11,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ItemUpdateDto {
-    @NotNull
-    @Positive
     Long id;
     String name;
     String description;
