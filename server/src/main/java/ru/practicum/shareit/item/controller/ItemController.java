@@ -43,9 +43,9 @@ public class ItemController {
         return itemService.create(itemCreateDto, userId);
     }
 
-    @GetMapping("/{id}")
-    public ItemDto getById(@PathVariable Long id) {
-        return itemService.getById(id);
+    @GetMapping("/{itemId}")
+    public ItemDto getById(@PathVariable Long itemId) {
+        return itemService.getById(itemId);
     }
 
     @GetMapping
@@ -60,9 +60,9 @@ public class ItemController {
         return itemService.update(itemId, itemDto, userId);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        itemService.delete(id);
+    @DeleteMapping("/{itemId}")
+    public void delete(@PathVariable Long itemId) {
+        itemService.delete(itemId);
     }
 
     @GetMapping("/search")
@@ -74,6 +74,7 @@ public class ItemController {
     public CommentDto createComment(@PathVariable Long itemId,
                                     @RequestBody CommentCreateDto commentCreateDto,
                                     @RequestHeader(HEADER) Long userId) {
+        System.out.println("Комментарий создает юзер " + userId + "для айтема " + itemId);
         return itemService.createComment(itemId, commentCreateDto, userId);
     }
 }

@@ -14,6 +14,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleAnnotations(MethodArgumentNotValidException e) {
+        System.out.println("handleannotations " + e.getMessage());
         String errorMessage = e.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> String.format("%s: %s", fieldError.getField(), fieldError.getDefaultMessage()))
                 .collect(Collectors.joining(", "));
@@ -23,6 +24,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleIllegalArgumentException(IllegalArgumentException e) {
+        System.out.println("handleiae " + e.getMessage());
         return new ErrorResponse("Ошибка валидации", e.getMessage());
     }
 }

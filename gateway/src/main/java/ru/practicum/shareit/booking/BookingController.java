@@ -59,4 +59,17 @@ public class BookingController {
 
         return bookingClient.getBookings(userId, state, from, size);
     }
+
+    @GetMapping("/owner")
+    public ResponseEntity<Object> getBookingByOwner(@RequestHeader(USER_ID_HEADER) Long ownerId,
+                                                    @RequestParam(name = "state", defaultValue = "ALL") String stateParam) {
+        BookingState state;
+        try {
+            state = BookingState.valueOf(stateParam.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Unknown state: " + stateParam);
+        }
+
+        return bookingClient.getBookingByOwner(ownerId, state);
+    }
 }

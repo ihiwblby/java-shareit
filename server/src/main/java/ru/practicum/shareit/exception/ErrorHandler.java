@@ -11,6 +11,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleConditionsNotMet(final ConditionsNotMetException e) {
+        System.out.println("handleconditionsnotmet " + e.getMessage());
         return new ErrorResponse("Ошибка со стороны пользователя", e.getMessage());
     }
 

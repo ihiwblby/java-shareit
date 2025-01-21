@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,8 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.practicum.shareit.user.dto.UserCreateDto;
-import ru.practicum.shareit.user.dto.UserUpdateDto;
+import ru.practicum.shareit.user.dto.UserDto;
 
+@Slf4j
 @Controller
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
@@ -32,19 +34,21 @@ public class UserController {
         return userClient.createUser(userCreateDto);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{userId}")
     public ResponseEntity<Object> getUser(@PathVariable @Positive Long userId) {
         return userClient.getUser(userId);
     }
 
     @PatchMapping("/{userId}")
     public ResponseEntity<Object> updateUser(@PathVariable Long userId,
-                                             @RequestBody @Valid UserUpdateDto userUpdateDto) {
-        return userClient.updateUser(userId, userUpdateDto);
+                                             @RequestBody @Valid UserDto userDto) {
+        return userClient.updateUser(userId, userDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable @Positive Long userId) {
-        userClient.deleteUser(userId);
+    public void delete(@PathVariable @Positive Long id) {
+        System.out.println("В gateway получен запрос на удаление пользователя с id = " + id);
+        userClient.delete(id);
+        System.out.println("Gateaway finish");
     }
 }

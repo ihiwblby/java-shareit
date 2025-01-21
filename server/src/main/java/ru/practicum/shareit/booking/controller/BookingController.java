@@ -31,7 +31,10 @@ public class BookingController {
     @PostMapping
     public BookingResponseDto create(@RequestHeader(HEADER) Long userId,
                                      @RequestBody BookingCreateDto bookingCreateDto) {
-        return bookingService.create(bookingCreateDto, userId);
+        System.out.println("creating booking for user + " + userId + " item + " + bookingCreateDto.getItemId());
+        var res = bookingService.create(bookingCreateDto, userId);
+        System.out.println("ans itemid: " + res.getItem().getId() + ", bookerid" + res.getBooker().getId() + "status " + res.getStatus() + "end " + res.getEnd());
+        return res;
     }
 
     @PatchMapping("/{bookingId}")

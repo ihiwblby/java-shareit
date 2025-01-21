@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.practicum.shareit.item.dto.CommentCreateDto;
-import ru.practicum.shareit.item.dto.ItemUpdateDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
 
 @Controller
@@ -37,7 +37,7 @@ public class ItemController {
         return itemClient.createItem(itemCreateDto, userId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{itemId}")
     public ResponseEntity<Object> getItem(@PathVariable @Positive Long itemId) {
         return itemClient.getItem(itemId);
     }
@@ -49,12 +49,12 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ResponseEntity<Object> updateItem(@PathVariable @Positive Long itemId,
-                                             @Valid @RequestBody ItemUpdateDto itemUpdateDto,
+                                             @Valid @RequestBody ItemDto itemDto,
                                              @RequestHeader(HEADER) Long userId) {
-        return itemClient.updateItem(itemId, itemUpdateDto, userId);
+        return itemClient.updateItem(itemId, itemDto, userId);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{itemId}")
     public void deleteItem(@PathVariable @Positive Long itemId) {
         itemClient.deleteItem(itemId);
     }

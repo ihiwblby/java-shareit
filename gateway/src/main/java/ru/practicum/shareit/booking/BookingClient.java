@@ -47,4 +47,11 @@ public class BookingClient extends BaseClient {
         );
         return get("?state={state}&from={from}&size={size}", userId, parameters);
     }
+
+    public ResponseEntity<Object> getBookingByOwner(Long ownerId, BookingState state) {
+        Map<String, Object> parameters = Map.of(
+                "state", state.name()
+        );
+        return get("/owner?state={state}", ownerId, parameters);
+    }
 }
