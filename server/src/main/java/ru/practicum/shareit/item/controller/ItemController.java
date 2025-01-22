@@ -74,7 +74,6 @@ public class ItemController {
     public CommentDto createComment(@PathVariable Long itemId,
                                     @RequestBody CommentCreateDto commentCreateDto,
                                     @RequestHeader(HEADER) Long userId) {
-        System.out.println("Комментарий создает юзер " + userId + "для айтема " + itemId);
         return itemService.createComment(itemId, commentCreateDto, userId);
     }
 }

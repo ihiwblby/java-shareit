@@ -12,6 +12,7 @@ import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
@@ -42,5 +43,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "where b.item = ?1 and b.status = 'APPROVED'")
     List<Booking> findAllApprovedByItem(Item item, Sort start);
 
-    List<Booking> findByBookerAndItem(User booker, Item item);
+    Optional<Booking> findByBookerAndItem(User booker, Item item);
 }

@@ -146,21 +146,16 @@ public class ItemServiceImpl implements ItemService {
         User author = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с ID = " + userId + " не найден"));
 
-        boolean isBooking = bookingRepository.findByBookerAndItem(author, item).stream()
-                .anyMatch(booking ->
-                        booking.getStatus() == BookingStatus.PAST
-                );
-        System.out.println("\nbookings:");
-        bookingRepository.findByBookerAndItem(author, item).forEach(b ->
-                System.out.println("itemId: " + b.getItem().getId() +
-                        ", bookerId: " + b.getBooker().getId() +
-                        ", status: " + b.getStatus().name() +
-                        ", end: " + b.getEnd().toString() +
-                        ", now: " + LocalDateTime.now() +
-                        ", isEndBeforeNow: " + b.getEnd().isBefore(LocalDateTime.now())
-                        ));
-        System.out.println("bookings finish\n");
-        if (!isBooking) {
+        Booking booking = bookingRepository.findByBookerAndItem(author, item)
+                .orElseThrow(() -> new NotFoundException("Пользователь не бронировал эту вещь"));
+
+        System.out.println("end " + booking.getEnd());
+        System.out.println("now " + LocalDateTime.now());
+        System.out.println("status " + booking.getStatus());
+        System.out.println("isEndAfterNow " + booking.getEnd().isAfter(LocalDateTime.now()));
+
+        if (booking.getStatus() != BookingStatus.APPROVED ||
+                booking.getEnd().isAfter(LocalDateTime.now())) {
             throw new ConditionsNotMetException("Пользователь не бронировал эту вещь или срок бронирования ещё не истёк");
         }
 
