@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -44,9 +45,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        System.out.println("В server получен запрос на удаление пользователя с id = " + id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.delete(id);
-        System.out.println("Server finish");
+        return ResponseEntity.noContent().build();
     }
 }

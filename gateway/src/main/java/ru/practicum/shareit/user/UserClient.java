@@ -40,7 +40,6 @@ public class UserClient extends BaseClient {
     }
 
     public void delete(Long id) {
-        System.out.println("Юзер с айди " + id + " передается в server для удаления");
         delete("/" + id);
     }
 }

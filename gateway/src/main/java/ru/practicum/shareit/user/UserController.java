@@ -46,9 +46,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable @Positive Long id) {
-        System.out.println("В gateway получен запрос на удаление пользователя с id = " + id);
+    public ResponseEntity<Void> delete(@PathVariable @Positive Long id) {
         userClient.delete(id);
-        System.out.println("Gateaway finish");
+        return ResponseEntity.noContent().build();
     }
 }
