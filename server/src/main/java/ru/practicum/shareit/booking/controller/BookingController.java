@@ -36,26 +36,26 @@ public class BookingController {
 
     @PatchMapping("/{bookingId}")
     public BookingResponseDto approve(@RequestHeader(HEADER) Long ownerId,
-                              @PathVariable Long bookingId,
-                              @RequestParam boolean approved) {
+                                      @PathVariable Long bookingId,
+                                      @RequestParam boolean approved) {
         return bookingService.approve(ownerId, bookingId, approved);
     }
 
     @GetMapping("/{bookingId}")
     public BookingResponseDto getById(@RequestHeader(HEADER) Long userId,
-                              @PathVariable Long bookingId) {
+                                      @PathVariable Long bookingId) {
         return bookingService.getById(userId, bookingId);
     }
 
     @GetMapping
     public Collection<BookingResponseDto> getByBooker(@RequestHeader(HEADER) Long bookerId,
-                                              @RequestParam(defaultValue = "ALL") BookingStatus state) {
+                                                      @RequestParam(defaultValue = "ALL") BookingStatus state) {
         return bookingService.getByBooker(bookerId, state);
     }
 
     @GetMapping("/owner")
     public Collection<BookingResponseDto> getByOwner(@RequestHeader(HEADER) Long ownerId,
-                                             @RequestParam(defaultValue = "ALL") BookingStatus state) {
+                                                     @RequestParam(defaultValue = "ALL") BookingStatus state) {
         return bookingService.getByOwner(ownerId, state);
     }
 }
