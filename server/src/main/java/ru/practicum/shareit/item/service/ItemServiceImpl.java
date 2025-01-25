@@ -149,11 +149,6 @@ public class ItemServiceImpl implements ItemService {
         Booking booking = bookingRepository.findByBookerAndItem(author, item)
                 .orElseThrow(() -> new NotFoundException("Пользователь не бронировал эту вещь"));
 
-        System.out.println("end " + booking.getEnd());
-        System.out.println("now " + LocalDateTime.now());
-        System.out.println("status " + booking.getStatus());
-        System.out.println("isEndAfterNow " + booking.getEnd().isAfter(LocalDateTime.now()));
-
         if (booking.getStatus() != BookingStatus.APPROVED ||
                 booking.getEnd().isAfter(LocalDateTime.now())) {
             throw new ConditionsNotMetException("Пользователь не бронировал эту вещь или срок бронирования ещё не истёк");
